@@ -42,6 +42,8 @@ UI layout
 - Confetti burst is medium: more pieces, wider spread, longer duration.
 - Confetti burst is wild: larger, longer, and wider.
 - Confetti now randomizes subtle/medium/wild presets.
+- Confetti bursts use heart-shaped pieces 35% of the time.
+- Heart-shaped confetti pieces are larger (20px) for readability.
 - GitHub Pages workflow copies site files into a single artifact folder.
 - Locked page tiles render a lock icon instead of the page number.
 

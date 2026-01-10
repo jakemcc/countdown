@@ -189,3 +189,11 @@ export function undoLast(completedPages, lockedFrontier) {
 export function lockIn(completedPages) {
   return completedPages.length ? Math.max(...completedPages) : 0;
 }
+
+export function shouldUseHeartConfetti(randomValue, chance = 0.2) {
+  return Number(randomValue) < Number(chance);
+}
+
+export function getHeartBurstChance() {
+  return 0.35;
+}

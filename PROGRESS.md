@@ -1,6 +1,9 @@
 Progress log
 
 2026-01-10
+- Adjusted heart confetti chance to 35%.
+- Added a 1-in-5 heart-shaped confetti burst.
+- Increased heart confetti size for readability.
 - Centered header stats in the card layout.
 - Stacked stat labels above values on all screen sizes.
 - Added a test to keep the mobile stat stack layout.

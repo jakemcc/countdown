@@ -7,7 +7,9 @@ import {
   getNextPage,
   isPageCompletable,
   canUndo,
+  getHeartBurstChance,
   lockIn,
+  shouldUseHeartConfetti,
   toDateKey,
 } from "./logic.mjs";
 
@@ -41,6 +43,7 @@ const CONFETTI_PRESETS = [
   { pieces: 24, spreadX: 140, riseY: 110, spin: 210, delay: 120 },
   { pieces: 48, spreadX: 220, riseY: 180, spin: 360, delay: 160 },
 ];
+const HEART_BURST_CHANCE = getHeartBurstChance();
 
 let projectState = null;
 
@@ -141,10 +144,11 @@ function launchConfetti(target) {
   burst.style.top = `${rect.top + rect.height / 2}px`;
 
   const preset = CONFETTI_PRESETS[Math.floor(Math.random() * CONFETTI_PRESETS.length)];
+  const isHeartBurst = shouldUseHeartConfetti(Math.random(), HEART_BURST_CHANCE);
   const pieces = preset.pieces;
   for (let i = 0; i < pieces; i += 1) {
     const piece = document.createElement("span");
-    piece.className = "confetti-piece";
+    piece.className = `confetti-piece${isHeartBurst ? " confetti-piece--heart" : ""}`;
     const x = Math.round((Math.random() - 0.5) * preset.spreadX);
     const y = Math.round(-40 - Math.random() * preset.riseY);
     const r = Math.round((Math.random() * preset.spin * 2) - preset.spin);

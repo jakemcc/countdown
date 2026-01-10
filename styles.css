@@ -223,9 +223,34 @@ body {
   animation: confetti-pop 900ms ease-out var(--delay) forwards;
 }
 
+.confetti-piece--heart {
+  width: 20px;
+  height: 20px;
+  border-radius: 0;
+  clip-path: polygon(
+    50% 15%,
+    62% 7%,
+    76% 7%,
+    86% 16%,
+    88% 28%,
+    82% 40%,
+    50% 72%,
+    18% 40%,
+    12% 28%,
+    14% 16%,
+    24% 7%,
+    38% 7%
+  );
+}
+
 .confetti-piece:nth-child(odd) {
   width: 5px;
   height: 8px;
+}
+
+.confetti-piece--heart:nth-child(odd) {
+  width: 19px;
+  height: 19px;
 }
 
 .legend {

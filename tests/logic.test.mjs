@@ -15,6 +15,8 @@ import {
   undoLast,
   lockIn,
   toDateKey,
+  shouldUseHeartConfetti,
+  getHeartBurstChance,
 } from "../logic.mjs";
 
 test("buildDateRange returns inclusive dates", () => {
@@ -177,4 +179,17 @@ test("undoLast removes the latest completion if allowed", () => {
 test("lockIn returns the highest completed page", () => {
   assert.equal(lockIn([]), 0);
   assert.equal(lockIn([1, 2, 3]), 3);
+});
+
+test("shouldUseHeartConfetti returns true below the chance threshold", () => {
+  assert.equal(shouldUseHeartConfetti(0.34, 0.35), true);
+});
+
+test("shouldUseHeartConfetti returns false at or above the chance threshold", () => {
+  assert.equal(shouldUseHeartConfetti(0.35, 0.35), false);
+  assert.equal(shouldUseHeartConfetti(0.9, 0.35), false);
+});
+
+test("getHeartBurstChance returns the default heart confetti chance", () => {
+  assert.equal(getHeartBurstChance(), 0.35);
 });
