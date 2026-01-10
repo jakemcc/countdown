@@ -42,6 +42,7 @@ UI layout
 - Confetti burst is wild: larger, longer, and wider.
 - Confetti now randomizes subtle/medium/wild presets.
 - GitHub Pages workflow copies site files into a single artifact folder.
+- Locked page tiles render a lock icon instead of the page number.
 
 Files
 - index.html

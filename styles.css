@@ -186,13 +186,7 @@ body {
 }
 
 .page-tile--locked::after {
-  content: "locked";
-  position: absolute;
-  inset: auto 6px 6px auto;
-  font-size: 0.55rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(31, 27, 22, 0.6);
+  content: "";
 }
 
 .page-tile--disabled {

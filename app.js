@@ -179,7 +179,7 @@ function buildTile(pageNumber, state) {
   button.type = "button";
   button.className = `page-tile ${state}`.trim();
   button.dataset.page = String(pageNumber);
-  button.textContent = pageNumber;
+  button.textContent = state.includes("page-tile--locked") ? "🔒" : pageNumber;
   if (state.includes("page-tile--disabled")) {
     button.disabled = true;
   }
