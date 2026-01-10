@@ -1,6 +1,7 @@
 Progress log
 
 2026-01-10
+- Fixed Change goal form visibility when hidden.
 - Added a Projected label in the burndown legend.
 - Added a dotted projection in the burndown chart using current pace after today.
 - Added an inline Change goal editor for total pages.

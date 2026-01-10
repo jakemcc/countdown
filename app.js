@@ -371,7 +371,7 @@ function render(project) {
   const highestCompleted = lockIn(getCompletedPages(project));
   if (highestCompleted > project.lockedFrontier) {
     elements.lockButton.hidden = false;
-    elements.lockButton.textContent = `Lock in to page ${highestCompleted}`;
+    elements.lockButton.textContent = `Lock done`;
   } else {
     elements.lockButton.hidden = true;
   }

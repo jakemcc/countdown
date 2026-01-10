@@ -52,3 +52,11 @@ test("projected legend marker is dashed", async () => {
     )
   );
 });
+
+test("goal form hides when the hidden attribute is set", async () => {
+  const css = await fs.readFile(new URL("../styles.css", import.meta.url), "utf8");
+
+  assert.ok(
+    /\.goal-form\[hidden\]\s*{[^}]*display:\s*none;/.test(css)
+  );
+});
