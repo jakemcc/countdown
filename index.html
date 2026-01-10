@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page Burndown</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <div class="hero__text">
+          <p class="hero__eyebrow">Editing Tracker</p>
+          <h1>Page-by-page momentum</h1>
+          <p class="hero__lede">
+            Track forward-only progress and keep your burndown honest.
+          </p>
+        </div>
+        <div class="hero__stats" id="stats">
+          <div class="stat">
+            <span class="stat__label">Completed</span>
+            <span class="stat__value" data-stat="completed">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat__label">Remaining</span>
+            <span class="stat__value" data-stat="remaining">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat__label">Days left</span>
+            <span class="stat__value" data-stat="days-left">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat__label">Pace needed</span>
+            <span class="stat__value" data-stat="pace">0</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="card" id="setup-card">
+          <h2>Set up the book</h2>
+          <p class="card__hint">
+            Enter total pages and the timeline. Progress only moves forward.
+          </p>
+          <form id="setup-form">
+            <label class="field">
+              <span>Total pages</span>
+              <input
+                type="number"
+                inputmode="numeric"
+                name="totalPages"
+                min="1"
+                placeholder="180"
+                required
+              />
+            </label>
+            <label class="field">
+              <span>Start date</span>
+              <input type="date" name="startDate" required />
+            </label>
+            <label class="field">
+              <span>End date</span>
+              <input type="date" name="endDate" required />
+            </label>
+            <p class="form__error" id="form-error" role="alert"></p>
+            <div class="form__actions">
+              <button type="submit" class="btn btn--primary">
+                Start tracking
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card card--wide" id="tracker-card" hidden>
+          <div class="card__header">
+            <div>
+              <h2>Page frontier</h2>
+              <p class="card__hint">
+                Only the next page is active. Lock in to prevent undo.
+              </p>
+            </div>
+            <div class="card__actions">
+              <button class="btn btn--ghost" id="lock-button" hidden>
+                Lock in
+              </button>
+              <button class="btn btn--ghost" id="reset-button">
+                Reset project
+              </button>
+            </div>
+          </div>
+          <div class="grid" id="page-grid" aria-live="polite"></div>
+        </section>
+
+        <section class="card card--wide" id="chart-card" hidden>
+          <div class="card__header">
+            <div>
+              <h2>Burndown</h2>
+              <p class="card__hint">
+                Actual remaining pages vs. the ideal daily pace.
+              </p>
+            </div>
+            <div class="legend">
+              <span class="legend__item legend__item--actual">Actual</span>
+              <span class="legend__item legend__item--ideal">Ideal</span>
+            </div>
+          </div>
+          <div class="chart" id="chart"></div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
