@@ -11,16 +11,8 @@
       <header class="hero">
         <div class="hero__text">
           <p class="hero__eyebrow">Editing Tracker</p>
-          <h1>Page-by-page momentum</h1>
-          <p class="hero__lede">
-            Track forward-only progress and keep your burndown honest.
-          </p>
         </div>
         <div class="hero__stats" id="stats">
-          <div class="stat">
-            <span class="stat__label">Completed</span>
-            <span class="stat__value" data-stat="completed">0</span>
-          </div>
           <div class="stat">
             <span class="stat__label">Remaining</span>
             <span class="stat__value" data-stat="remaining">0</span>
@@ -50,7 +42,8 @@
                 inputmode="numeric"
                 name="totalPages"
                 min="1"
-                placeholder="180"
+                placeholder="140"
+                value="140"
                 required
               />
             </label>
@@ -73,12 +66,6 @@
 
         <section class="card card--wide" id="tracker-card" hidden>
           <div class="card__header">
-            <div>
-              <h2>Page frontier</h2>
-              <p class="card__hint">
-                Only the next page is active. Lock in to prevent undo.
-              </p>
-            </div>
             <div class="card__actions">
               <button class="btn btn--ghost" id="lock-button" hidden>
                 Lock in

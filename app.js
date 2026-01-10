@@ -28,11 +28,12 @@ const elements = {
 };
 
 const statEls = {
-  completed: document.querySelector('[data-stat="completed"]'),
   remaining: document.querySelector('[data-stat="remaining"]'),
   daysLeft: document.querySelector('[data-stat="days-left"]'),
   pace: document.querySelector('[data-stat="pace"]'),
 };
+
+const CONFETTI_COLORS = ["#c74a2e", "#2b5b4b", "#f4d9c7", "#d8e7db", "#f2b56b"];
 
 let projectState = null;
 
@@ -135,10 +136,36 @@ function setStats(project) {
   const daysLeft = Math.min(daysLeftRaw, totalDays);
   const pace = remaining / Math.max(daysLeft, 1);
 
-  statEls.completed.textContent = completed;
   statEls.remaining.textContent = remaining;
   statEls.daysLeft.textContent = daysLeft;
   statEls.pace.textContent = pace.toFixed(2);
+}
+
+function launchConfetti(target) {
+  const rect = target.getBoundingClientRect();
+  const burst = document.createElement("div");
+  burst.className = "confetti-burst";
+  burst.style.left = `${rect.left + rect.width / 2}px`;
+  burst.style.top = `${rect.top + rect.height / 2}px`;
+
+  const pieces = 12;
+  for (let i = 0; i < pieces; i += 1) {
+    const piece = document.createElement("span");
+    piece.className = "confetti-piece";
+    const x = Math.round((Math.random() - 0.5) * 80);
+    const y = Math.round(-20 - Math.random() * 60);
+    const r = Math.round((Math.random() * 360) - 180);
+    const delay = Math.round(Math.random() * 80);
+    piece.style.setProperty("--x", `${x}px`);
+    piece.style.setProperty("--y", `${y}px`);
+    piece.style.setProperty("--r", `${r}deg`);
+    piece.style.setProperty("--delay", `${delay}ms`);
+    piece.style.background = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+    burst.appendChild(piece);
+  }
+
+  document.body.appendChild(burst);
+  window.setTimeout(() => burst.remove(), 900);
 }
 
 function buildTile(pageNumber, state) {
@@ -345,6 +372,7 @@ elements.pageGrid.addEventListener("click", async (event) => {
   const canUndoLast = canUndo(completedPages, projectState.lockedFrontier);
 
   if (isPageCompletable(pageNumber, projectState.totalPages, completedPages)) {
+    launchConfetti(button);
     const today = toDateKey(new Date());
     await updateProject((project) => {
       project.completions = [...project.completions, { page: pageNumber, date: today }];

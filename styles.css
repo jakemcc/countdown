@@ -30,56 +30,45 @@ body {
 .page {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 32px 20px 80px;
+  padding: 24px 18px 64px;
 }
 
 .hero {
   display: grid;
-  gap: 24px;
+  gap: 16px;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  align-items: end;
-  margin-bottom: 28px;
+  align-items: center;
+  margin-bottom: 18px;
   animation: fadeUp 0.8s ease forwards;
 }
 
 .hero__eyebrow {
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--muted);
-  margin: 0 0 10px;
-}
-
-.hero h1 {
-  margin: 0 0 12px;
-  font-size: clamp(2rem, 3vw, 3rem);
-}
-
-.hero__lede {
   margin: 0;
-  max-width: 28ch;
-  color: var(--muted);
 }
 
 .hero__stats {
   background: var(--card);
   border-radius: var(--radius);
-  padding: 20px;
+  padding: 14px;
   display: grid;
-  grid-template-columns: repeat(2, minmax(120px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(2, minmax(110px, 1fr));
+  gap: 12px;
   box-shadow: var(--shadow);
 }
 
 .stat__label {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--muted);
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .stat__value {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 600;
 }
 
@@ -215,6 +204,28 @@ body {
   transform: translateY(-2px);
 }
 
+.confetti-burst {
+  position: fixed;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--accent);
+  animation: confetti-pop 700ms ease-out var(--delay) forwards;
+}
+
+.confetti-piece:nth-child(odd) {
+  width: 5px;
+  height: 8px;
+}
+
 .legend {
   display: flex;
   gap: 16px;
@@ -262,12 +273,53 @@ body {
   }
 }
 
+@keyframes confetti-pop {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) rotate(var(--r));
+  }
+}
+
 @media (max-width: 700px) {
+  .card--wide {
+    padding: 18px;
+  }
+
   .hero__stats {
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .stat {
+    min-width: 0;
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .stat__label {
+    margin-bottom: 0;
+    font-size: 0.65rem;
+  }
+
+  .stat__value {
+    font-size: 1rem;
   }
 
   .grid {
-    grid-template-columns: repeat(auto-fit, minmax(32px, 1fr));
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 6px;
   }
 }

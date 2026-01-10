@@ -31,6 +31,13 @@ UI layout
 - Page grid for tick list.
 - Burndown chart.
 - Header stats: completed, remaining, days elapsed, days left, pace needed.
+- Compact header with eyebrow only; stats box reduced for mobile.
+- Small-screen stats are a single-line strip with inline labels.
+- Small-screen page grid targets 10 columns with tighter spacing.
+- Page Frontier header text removed; buttons remain.
+- Header stats hide completed; total pages default to 140.
+- Stats update no longer expects a completed node after removal.
+- Page tile completion triggers a confetti burst.
 
 Files
 - index.html
