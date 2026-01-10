@@ -1,6 +1,7 @@
 Progress log
 
 2026-01-10
+- Fixed GitHub Pages artifact upload by staging files in a site folder.
 - Randomized confetti intensity across three presets.
 - Tuned confetti to a wild burst.
 - Tuned confetti to a medium burst.
