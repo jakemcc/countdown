@@ -38,6 +38,9 @@ UI layout
 - Header stats hide completed; total pages default to 140.
 - Stats update no longer expects a completed node after removal.
 - Page tile completion triggers a confetti burst.
+- Confetti burst is medium: more pieces, wider spread, longer duration.
+- Confetti burst is wild: larger, longer, and wider.
+- Confetti now randomizes subtle/medium/wild presets.
 
 Files
 - index.html

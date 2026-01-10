@@ -1,6 +1,9 @@
 Progress log
 
 2026-01-10
+- Randomized confetti intensity across three presets.
+- Tuned confetti to a wild burst.
+- Tuned confetti to a medium burst.
 - Added a confetti burst on page completion clicks.
 - Fixed stats rendering after removing the Completed tile.
 - Removed the Completed stat and set total pages default to 140.

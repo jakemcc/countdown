@@ -218,7 +218,7 @@ body {
   height: 10px;
   border-radius: 2px;
   background: var(--accent);
-  animation: confetti-pop 700ms ease-out var(--delay) forwards;
+  animation: confetti-pop 900ms ease-out var(--delay) forwards;
 }
 
 .confetti-piece:nth-child(odd) {
