@@ -318,6 +318,12 @@ body {
   background: var(--graph-ideal);
 }
 
+.legend__item--projected::before {
+  background: transparent;
+  border: 2px dashed var(--graph-actual);
+  height: 0;
+}
+
 .chart {
   margin-top: 18px;
   width: 100%;

@@ -21,7 +21,9 @@ Data storage
 Chart
 - Inline SVG, no third-party libraries.
 - Two lines: actual remaining pages vs ideal burn (total pages / total days).
+- After today, the actual line projects with a dotted continuation using current pace.
 - Actual remaining repeats on days with no progress.
+- Legend includes Actual, Ideal, and Projected.
 - X-axis uses daily bins from start date to end date until the first completion.
 - After the first completion, the chart shows through today + 3 days, capped at the end date.
 - Ideal values stay tied to the full project timeline even when the chart window is shorter.

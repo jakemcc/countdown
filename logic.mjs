@@ -108,6 +108,32 @@ export function computeActualRemaining(totalPages, dateRange, completions) {
   });
 }
 
+export function computeProjectedRemaining(
+  actualRemaining,
+  dateRange,
+  currentPace,
+  today = new Date()
+) {
+  if (!dateRange.length || actualRemaining.length !== dateRange.length) {
+    return [];
+  }
+
+  const todayKey = toDateKey(today);
+  const todayIndex = dateRange.findIndex((date) => toDateKey(date) === todayKey);
+  if (todayIndex === -1) {
+    return [];
+  }
+
+  const pace = Number(currentPace) || 0;
+  return actualRemaining.map((value, index) => {
+    if (index <= todayIndex) {
+      return value;
+    }
+    const projected = actualRemaining[todayIndex] - pace * (index - todayIndex);
+    return Math.max(projected, 0);
+  });
+}
+
 export function computePaceStats({
   totalPages,
   startDate,

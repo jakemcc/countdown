@@ -1,6 +1,8 @@
 Progress log
 
 2026-01-10
+- Added a Projected label in the burndown legend.
+- Added a dotted projection in the burndown chart using current pace after today.
 - Added an inline Change goal editor for total pages.
 - When the goal shrinks, completions above the new total drop and the lock clamps.
 - Adjusted heart confetti chance to 35%.

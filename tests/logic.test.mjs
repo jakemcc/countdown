@@ -18,6 +18,7 @@ import {
   shouldUseHeartConfetti,
   getHeartBurstChance,
   reconcileGoal,
+  computeProjectedRemaining,
 } from "../logic.mjs";
 
 test("buildDateRange returns inclusive dates", () => {
@@ -229,4 +230,47 @@ test("reconcileGoal trims completions and locked frontier when shrinking", () =>
     { page: 2, date: "2025-01-02" },
   ]);
   assert.equal(next.lockedFrontier, 3);
+});
+
+test("computeProjectedRemaining steps down by pace after today", () => {
+  const range = [
+    new Date(2025, 0, 1),
+    new Date(2025, 0, 2),
+    new Date(2025, 0, 3),
+  ];
+  const actual = [10, 9, 9];
+  const today = new Date(2025, 0, 2);
+
+  const projection = computeProjectedRemaining(actual, range, 2, today);
+
+  assert.deepEqual(projection, [10, 9, 7]);
+});
+
+test("computeProjectedRemaining stays flat at zero pace", () => {
+  const range = [
+    new Date(2025, 0, 1),
+    new Date(2025, 0, 2),
+    new Date(2025, 0, 3),
+  ];
+  const actual = [8, 8, 8];
+  const today = new Date(2025, 0, 2);
+
+  const projection = computeProjectedRemaining(actual, range, 0, today);
+
+  assert.deepEqual(projection, [8, 8, 8]);
+});
+
+test("computeProjectedRemaining clamps at zero", () => {
+  const range = [
+    new Date(2025, 0, 1),
+    new Date(2025, 0, 2),
+    new Date(2025, 0, 3),
+    new Date(2025, 0, 4),
+  ];
+  const actual = [3, 2, 2, 2];
+  const today = new Date(2025, 0, 2);
+
+  const projection = computeProjectedRemaining(actual, range, 2, today);
+
+  assert.deepEqual(projection, [3, 2, 0, 0]);
 });

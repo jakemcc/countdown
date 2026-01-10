@@ -37,3 +37,18 @@ test("heart confetti pieces are larger for readability", async () => {
     /\.confetti-piece--heart:nth-child\(odd\)\s*{[^}]*height:\s*19px;/.test(css)
   );
 });
+
+test("projected legend marker is dashed", async () => {
+  const css = await fs.readFile(new URL("../styles.css", import.meta.url), "utf8");
+
+  assert.ok(
+    /\.legend__item--projected::before\s*{[^}]*border:\s*2px dashed var\(--graph-actual\);/.test(
+      css
+    )
+  );
+  assert.ok(
+    /\.legend__item--projected::before\s*{[^}]*background:\s*transparent;/.test(
+      css
+    )
+  );
+});

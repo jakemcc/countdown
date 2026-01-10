@@ -4,6 +4,7 @@ import {
   computeActualRemaining,
   computeIdealRemainingForChart,
   computePaceStats,
+  computeProjectedRemaining,
   getNextPage,
   isPageCompletable,
   canUndo,
@@ -235,6 +236,17 @@ function renderChart(project) {
     chartRange,
     project.completions
   );
+  const stats = computePaceStats({
+    totalPages: project.totalPages,
+    startDate: project.startDate,
+    endDate: project.endDate,
+    completions: project.completions,
+  });
+  const projection = computeProjectedRemaining(
+    actual,
+    chartRange,
+    stats.currentPace
+  );
 
   if (!chartRange.length) {
     elements.chart.innerHTML = "";
@@ -259,6 +271,27 @@ function renderChart(project) {
     values
       .map((value, index) => {
         const x = xForIndex(index);
+        const y = yForValue(value);
+        return `${index === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+      })
+      .join(" ");
+
+  const todayKey = toDateKey(new Date());
+  const todayIndex = chartRange.findIndex((date) => toDateKey(date) === todayKey);
+  const hasProjection =
+    projection.length === chartRange.length &&
+    todayIndex >= 0 &&
+    todayIndex < chartRange.length - 1;
+
+  const actualSolid = hasProjection ? actual.slice(0, todayIndex + 1) : actual;
+  const projectionSegment = hasProjection
+    ? projection.slice(todayIndex)
+    : [];
+
+  const linePathSegment = (values, offset) =>
+    values
+      .map((value, index) => {
+        const x = xForIndex(index + offset);
         const y = yForValue(value);
         return `${index === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
       })
@@ -304,9 +337,17 @@ function renderChart(project) {
       <path d="${linePath(ideal)}" fill="none" stroke="${
     "#c74a2e"
   }" stroke-width="3" stroke-linecap="round"></path>
-      <path d="${linePath(actual)}" fill="none" stroke="${
+      <path d="${linePath(actualSolid)}" fill="none" stroke="${
     "#2b5b4b"
   }" stroke-width="3" stroke-linecap="round"></path>
+      ${
+        hasProjection
+          ? `<path d="${linePathSegment(
+              projectionSegment,
+              todayIndex
+            )}" fill="none" stroke="#2b5b4b" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 8" opacity="0.7"></path>`
+          : ""
+      }
     </svg>
   `;
 
