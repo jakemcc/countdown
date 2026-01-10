@@ -34,6 +34,38 @@ export function buildDateRange(startDate, endDate) {
   return days;
 }
 
+export function buildChartDateRange(
+  startDate,
+  endDate,
+  completions,
+  today = new Date()
+) {
+  const start = normalizeDate(startDate);
+  const end = normalizeDate(endDate);
+
+  if (Number.isNaN(start.valueOf()) || Number.isNaN(end.valueOf())) {
+    return [];
+  }
+  if (end < start) {
+    return [];
+  }
+
+  const hasCompletions = Array.isArray(completions) && completions.length > 0;
+  if (!hasCompletions) {
+    return buildDateRange(start, end);
+  }
+
+  const normalizedToday = normalizeDate(today);
+  const windowEnd = new Date(
+    normalizedToday.getFullYear(),
+    normalizedToday.getMonth(),
+    normalizedToday.getDate() + 3
+  );
+  const cappedEnd = windowEnd < end ? windowEnd : end;
+  const clampedEnd = cappedEnd < start ? start : cappedEnd;
+  return buildDateRange(start, clampedEnd);
+}
+
 export function computeIdealRemaining(totalPages, dateRange) {
   if (!dateRange.length) {
     return [];
@@ -46,6 +78,19 @@ export function computeIdealRemaining(totalPages, dateRange) {
     const remaining = totalPages * (1 - index / lastIndex);
     return Math.max(0, remaining);
   });
+}
+
+export function computeIdealRemainingForChart(
+  totalPages,
+  fullDateRange,
+  chartDateRange
+) {
+  if (!fullDateRange.length || !chartDateRange.length) {
+    return [];
+  }
+  const ideal = computeIdealRemaining(totalPages, fullDateRange);
+  const length = Math.min(chartDateRange.length, ideal.length);
+  return ideal.slice(0, length);
 }
 
 export function computeActualRemaining(totalPages, dateRange, completions) {

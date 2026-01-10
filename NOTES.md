@@ -22,7 +22,9 @@ Chart
 - Inline SVG, no third-party libraries.
 - Two lines: actual remaining pages vs ideal burn (total pages / total days).
 - Actual remaining repeats on days with no progress.
-- X-axis uses daily bins from start date to end date.
+- X-axis uses daily bins from start date to end date until the first completion.
+- After the first completion, the chart shows through today + 3 days, capped at the end date.
+- Ideal values stay tied to the full project timeline even when the chart window is shorter.
 
 UI layout
 - Setup panel for inputs.

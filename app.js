@@ -1,7 +1,8 @@
 import {
   buildDateRange,
+  buildChartDateRange,
   computeActualRemaining,
-  computeIdealRemaining,
+  computeIdealRemainingForChart,
   getNextPage,
   isPageCompletable,
   canUndo,
@@ -185,18 +186,27 @@ function renderChart(project) {
   const chartHeight = 360;
   const padding = 40;
 
-  const dateRange = buildDateRange(
+  const fullRange = buildDateRange(
     new Date(project.startDate),
     new Date(project.endDate)
   );
-  const ideal = computeIdealRemaining(project.totalPages, dateRange);
+  const chartRange = buildChartDateRange(
+    new Date(project.startDate),
+    new Date(project.endDate),
+    project.completions
+  );
+  const ideal = computeIdealRemainingForChart(
+    project.totalPages,
+    fullRange,
+    chartRange
+  );
   const actual = computeActualRemaining(
     project.totalPages,
-    dateRange,
+    chartRange,
     project.completions
   );
 
-  if (!dateRange.length) {
+  if (!chartRange.length) {
     elements.chart.innerHTML = "";
     return;
   }
@@ -206,10 +216,10 @@ function renderChart(project) {
   const plotHeight = chartHeight - padding * 2;
 
   const xForIndex = (index) => {
-    if (dateRange.length === 1) {
+    if (chartRange.length === 1) {
       return padding + plotWidth / 2;
     }
-    return padding + (index / (dateRange.length - 1)) * plotWidth;
+    return padding + (index / (chartRange.length - 1)) * plotWidth;
   };
 
   const yForValue = (value) =>
@@ -224,14 +234,14 @@ function renderChart(project) {
       })
       .join(" ");
 
-  const tickCount = Math.min(dateRange.length, 6);
+  const tickCount = Math.min(chartRange.length, 6);
   const ticks = Array.from({ length: tickCount }, (_, index) => {
     const position = Math.round(
-      (index / Math.max(tickCount - 1, 1)) * (dateRange.length - 1)
+      (index / Math.max(tickCount - 1, 1)) * (chartRange.length - 1)
     );
     return {
       index: position,
-      label: toDateKey(dateRange[position]),
+      label: toDateKey(chartRange[position]),
     };
   });
 

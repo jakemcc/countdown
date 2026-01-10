@@ -3,7 +3,9 @@ import test from "node:test";
 
 import {
   buildDateRange,
+  buildChartDateRange,
   computeIdealRemaining,
+  computeIdealRemainingForChart,
   computeActualRemaining,
   getNextPage,
   isPageCompletable,
@@ -24,6 +26,47 @@ test("buildDateRange returns inclusive dates", () => {
   assert.equal(toDateKey(range[2]), "2025-01-03");
 });
 
+test("buildChartDateRange shows the full range before any completions", () => {
+  const start = new Date(2025, 0, 1);
+  const end = new Date(2025, 0, 5);
+  const range = buildChartDateRange(start, end, [], new Date(2025, 0, 2));
+
+  assert.equal(range.length, 5);
+  assert.equal(toDateKey(range[0]), "2025-01-01");
+  assert.equal(toDateKey(range[4]), "2025-01-05");
+});
+
+test("buildChartDateRange caps at today plus three after progress", () => {
+  const start = new Date(2025, 0, 1);
+  const end = new Date(2025, 0, 10);
+  const completions = [{ page: 1, date: "2025-01-02" }];
+  const range = buildChartDateRange(
+    start,
+    end,
+    completions,
+    new Date(2025, 0, 3)
+  );
+
+  assert.equal(range.length, 6);
+  assert.equal(toDateKey(range[0]), "2025-01-01");
+  assert.equal(toDateKey(range[5]), "2025-01-06");
+});
+
+test("buildChartDateRange clamps to the start if the window ends early", () => {
+  const start = new Date(2025, 0, 10);
+  const end = new Date(2025, 0, 20);
+  const completions = [{ page: 1, date: "2025-01-11" }];
+  const range = buildChartDateRange(
+    start,
+    end,
+    completions,
+    new Date(2025, 0, 1)
+  );
+
+  assert.equal(range.length, 1);
+  assert.equal(toDateKey(range[0]), "2025-01-10");
+});
+
 test("computeIdealRemaining linearly decreases to zero", () => {
   const start = new Date(2025, 0, 1);
   const end = new Date(2025, 0, 5);
@@ -33,6 +76,17 @@ test("computeIdealRemaining linearly decreases to zero", () => {
   assert.equal(ideal.length, 5);
   assert.equal(ideal[0], 100);
   assert.equal(ideal[4], 0);
+});
+
+test("computeIdealRemainingForChart uses the full project slope", () => {
+  const start = new Date(2025, 0, 1);
+  const end = new Date(2025, 0, 10);
+  const fullRange = buildDateRange(start, end);
+  const chartRange = buildDateRange(start, new Date(2025, 0, 4));
+  const ideal = computeIdealRemainingForChart(100, fullRange, chartRange);
+
+  assert.equal(ideal.length, 4);
+  assert.ok(Math.abs(ideal[3] - 66.6667) < 0.01);
 });
 
 test("computeActualRemaining repeats remaining on no-progress days", () => {
