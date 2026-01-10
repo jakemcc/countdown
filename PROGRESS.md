@@ -1,6 +1,8 @@
 Progress log
 
 2026-01-10
+- Added an inline Change goal editor for total pages.
+- When the goal shrinks, completions above the new total drop and the lock clamps.
 - Adjusted heart confetti chance to 35%.
 - Added a 1-in-5 heart-shaped confetti burst.
 - Increased heart confetti size for readability.

@@ -197,3 +197,18 @@ export function shouldUseHeartConfetti(randomValue, chance = 0.2) {
 export function getHeartBurstChance() {
   return 0.35;
 }
+
+export function reconcileGoal(project, nextTotalPages) {
+  const safeNextTotal = Number(nextTotalPages);
+  const trimmedCompletions = (project.completions || []).filter(
+    (entry) => entry.page <= safeNextTotal
+  );
+  const clampedFrontier = Math.min(project.lockedFrontier || 0, safeNextTotal);
+
+  return {
+    ...project,
+    totalPages: safeNextTotal,
+    completions: trimmedCompletions,
+    lockedFrontier: clampedFrontier,
+  };
+}

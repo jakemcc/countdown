@@ -74,10 +74,33 @@
               <button class="btn btn--ghost" id="lock-button" hidden>
                 Lock in
               </button>
+              <button class="btn btn--ghost" id="goal-button">
+                Change goal
+              </button>
               <button class="btn btn--ghost" id="reset-button">
                 Reset project
               </button>
             </div>
+            <form class="goal-form" id="goal-form" hidden>
+              <label class="goal-form__field">
+                <span>Total pages</span>
+                <input
+                  type="number"
+                  inputmode="numeric"
+                  name="totalPages"
+                  id="goal-total-pages"
+                  min="1"
+                  required
+                />
+              </label>
+              <div class="goal-form__actions">
+                <button type="submit" class="btn btn--primary">Save</button>
+                <button type="button" class="btn btn--ghost" id="goal-cancel">
+                  Cancel
+                </button>
+              </div>
+              <p class="form__error goal-form__error" id="goal-error" role="alert"></p>
+            </form>
           </div>
           <div class="grid" id="page-grid" aria-live="polite"></div>
         </section>

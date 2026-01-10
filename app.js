@@ -9,6 +9,7 @@ import {
   canUndo,
   getHeartBurstChance,
   lockIn,
+  reconcileGoal,
   shouldUseHeartConfetti,
   toDateKey,
 } from "./logic.mjs";
@@ -26,6 +27,11 @@ const elements = {
   pageGrid: document.querySelector("#page-grid"),
   resetButton: document.querySelector("#reset-button"),
   lockButton: document.querySelector("#lock-button"),
+  goalButton: document.querySelector("#goal-button"),
+  goalForm: document.querySelector("#goal-form"),
+  goalError: document.querySelector("#goal-error"),
+  goalInput: document.querySelector("#goal-total-pages"),
+  goalCancel: document.querySelector("#goal-cancel"),
   chart: document.querySelector("#chart"),
   stats: document.querySelector("#stats"),
 };
@@ -313,6 +319,7 @@ function render(project) {
   elements.trackerCard.hidden = !hasProject;
   elements.chartCard.hidden = !hasProject;
   if (!hasProject) {
+    elements.goalForm.hidden = true;
     return;
   }
 
@@ -326,6 +333,16 @@ function render(project) {
     elements.lockButton.textContent = `Lock in to page ${highestCompleted}`;
   } else {
     elements.lockButton.hidden = true;
+  }
+}
+
+function showGoalEditor(shouldShow) {
+  elements.goalError.textContent = "";
+  elements.goalForm.hidden = !shouldShow;
+  if (shouldShow && projectState) {
+    elements.goalInput.value = String(projectState.totalPages);
+    elements.goalInput.focus();
+    elements.goalInput.select();
   }
 }
 
@@ -415,6 +432,34 @@ elements.lockButton.addEventListener("click", async () => {
   });
 });
 
+elements.goalButton.addEventListener("click", () => {
+  if (!projectState) {
+    return;
+  }
+  showGoalEditor(elements.goalForm.hidden);
+});
+
+elements.goalCancel.addEventListener("click", () => {
+  showGoalEditor(false);
+});
+
+elements.goalForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!projectState) {
+    return;
+  }
+
+  elements.goalError.textContent = "";
+  const nextTotalPages = Number(elements.goalInput.value);
+  if (!Number.isInteger(nextTotalPages) || nextTotalPages <= 0) {
+    elements.goalError.textContent = "Enter a positive page count.";
+    return;
+  }
+
+  await updateProject((project) => reconcileGoal(project, nextTotalPages));
+  showGoalEditor(false);
+});
+
 elements.resetButton.addEventListener("click", async () => {
   const confirmed = window.confirm(
     "Reset this project? This clears all progress."
@@ -424,6 +469,7 @@ elements.resetButton.addEventListener("click", async () => {
   }
   await clearProject();
   projectState = null;
+  showGoalEditor(false);
   render(projectState);
 });
 

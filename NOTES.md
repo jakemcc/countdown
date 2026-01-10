@@ -38,6 +38,7 @@ UI layout
 - Page Frontier header text removed; buttons remain.
 - Header stats hide completed; total pages default to 140.
 - Stats update no longer expects a completed node after removal.
+- Change goal button edits total pages inline; shrinking trims completions and clamps the lock.
 - Page tile completion triggers a confetti burst.
 - Confetti burst is medium: more pieces, wider spread, longer duration.
 - Confetti burst is wild: larger, longer, and wider.

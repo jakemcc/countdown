@@ -106,6 +106,12 @@ body {
   gap: 16px;
 }
 
+.card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .card__hint {
   margin: 6px 0 0;
   color: var(--muted);
@@ -136,6 +142,40 @@ body {
 .form__actions {
   display: flex;
   gap: 12px;
+}
+
+.goal-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.goal-form__field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.goal-form__field span {
+  color: var(--muted);
+}
+
+.goal-form__field input {
+  width: 110px;
+  margin: 0;
+}
+
+.goal-form__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.goal-form__error {
+  margin: 0;
+  min-height: 0;
+  font-size: 0.85rem;
 }
 
 .btn {
@@ -317,6 +357,14 @@ body {
 @media (max-width: 700px) {
   .card--wide {
     padding: 18px;
+  }
+
+  .goal-form {
+    align-items: flex-start;
+  }
+
+  .goal-form__actions {
+    width: 100%;
   }
 
   .hero__stats {

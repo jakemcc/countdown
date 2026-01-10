@@ -17,6 +17,7 @@ import {
   toDateKey,
   shouldUseHeartConfetti,
   getHeartBurstChance,
+  reconcileGoal,
 } from "../logic.mjs";
 
 test("buildDateRange returns inclusive dates", () => {
@@ -192,4 +193,40 @@ test("shouldUseHeartConfetti returns false at or above the chance threshold", ()
 
 test("getHeartBurstChance returns the default heart confetti chance", () => {
   assert.equal(getHeartBurstChance(), 0.35);
+});
+
+test("reconcileGoal keeps completions when expanding the total", () => {
+  const project = {
+    totalPages: 5,
+    completions: [
+      { page: 1, date: "2025-01-01" },
+      { page: 2, date: "2025-01-02" },
+    ],
+    lockedFrontier: 2,
+  };
+  const next = reconcileGoal(project, 8);
+
+  assert.equal(next.totalPages, 8);
+  assert.deepEqual(next.completions, project.completions);
+  assert.equal(next.lockedFrontier, 2);
+});
+
+test("reconcileGoal trims completions and locked frontier when shrinking", () => {
+  const project = {
+    totalPages: 6,
+    completions: [
+      { page: 1, date: "2025-01-01" },
+      { page: 2, date: "2025-01-02" },
+      { page: 5, date: "2025-01-03" },
+    ],
+    lockedFrontier: 5,
+  };
+  const next = reconcileGoal(project, 3);
+
+  assert.equal(next.totalPages, 3);
+  assert.deepEqual(next.completions, [
+    { page: 1, date: "2025-01-01" },
+    { page: 2, date: "2025-01-02" },
+  ]);
+  assert.equal(next.lockedFrontier, 3);
 });
