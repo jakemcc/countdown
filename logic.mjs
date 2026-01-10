@@ -108,6 +108,46 @@ export function computeActualRemaining(totalPages, dateRange, completions) {
   });
 }
 
+export function computePaceStats({
+  totalPages,
+  startDate,
+  endDate,
+  completions,
+  today = new Date(),
+}) {
+  const safeCompletions = Array.isArray(completions) ? completions : [];
+  const start = normalizeDate(new Date(startDate));
+  const end = normalizeDate(new Date(endDate));
+  const dateRange = buildDateRange(start, end);
+  const totalDays = Math.max(dateRange.length, 1);
+  const normalizedToday = normalizeDate(today);
+  const msPerDay = 1000 * 60 * 60 * 24;
+
+  const daysDoneRaw = normalizedToday < start
+    ? 0
+    : Math.floor((normalizedToday - start) / msPerDay) + 1;
+  const daysDone = Math.min(Math.max(daysDoneRaw, 0), totalDays);
+
+  const daysLeftRaw = normalizedToday > end
+    ? 0
+    : Math.floor((end - normalizedToday) / msPerDay) + 1;
+  const daysLeft = Math.min(Math.max(daysLeftRaw, 0), totalDays);
+
+  const completed = safeCompletions.length;
+  const remaining = Math.max((Number(totalPages) || 0) - completed, 0);
+
+  const plannedPace = (Number(totalPages) || 0) / totalDays;
+  const currentPace = completed / Math.max(daysDone, 1);
+  const paceNeeded = remaining / Math.max(daysLeft, 1);
+
+  return {
+    daysLeft,
+    plannedPace,
+    currentPace,
+    paceNeeded,
+  };
+}
+
 export function getNextPage(totalPages, completedPages) {
   const maxCompleted = completedPages.length
     ? Math.max(...completedPages)

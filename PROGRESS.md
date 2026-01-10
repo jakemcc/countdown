@@ -1,6 +1,12 @@
 Progress log
 
 2026-01-10
+- Centered header stats in the card layout.
+- Stacked stat labels above values on all screen sizes.
+- Added a test to keep the mobile stat stack layout.
+- Updated header stats to days left, planned pace, current pace, and pace needed.
+- Added pace stat calculations with inclusive day counting.
+- Added tests for pace stats helper.
 - Locked tiles now show a lock icon.
 - Fixed GitHub Pages artifact upload by staging files in a site folder.
 - Randomized confetti intensity across three presets.

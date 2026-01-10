@@ -3,6 +3,7 @@ import {
   buildChartDateRange,
   computeActualRemaining,
   computeIdealRemainingForChart,
+  computePaceStats,
   getNextPage,
   isPageCompletable,
   canUndo,
@@ -28,9 +29,10 @@ const elements = {
 };
 
 const statEls = {
-  remaining: document.querySelector('[data-stat="remaining"]'),
   daysLeft: document.querySelector('[data-stat="days-left"]'),
-  pace: document.querySelector('[data-stat="pace"]'),
+  plannedPace: document.querySelector('[data-stat="planned-pace"]'),
+  currentPace: document.querySelector('[data-stat="current-pace"]'),
+  paceNeeded: document.querySelector('[data-stat="pace-needed"]'),
 };
 
 const CONFETTI_COLORS = ["#c74a2e", "#2b5b4b", "#f4d9c7", "#d8e7db", "#f2b56b"];
@@ -118,32 +120,17 @@ function getCompletedPages(project) {
 }
 
 function setStats(project) {
-  const completed = project.completions.length;
-  const remaining = Math.max(project.totalPages - completed, 0);
-  const dateRange = buildDateRange(
-    new Date(project.startDate),
-    new Date(project.endDate)
-  );
-  const today = new Date();
-  const normalizedToday = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate()
-  );
-  const endDate = new Date(project.endDate);
-  const totalDays = Math.max(dateRange.length - 1, 1);
-  const daysLeftRaw = Math.max(
-    0,
-    Math.round(
-      (endDate - normalizedToday) / (1000 * 60 * 60 * 24)
-    )
-  );
-  const daysLeft = Math.min(daysLeftRaw, totalDays);
-  const pace = remaining / Math.max(daysLeft, 1);
+  const stats = computePaceStats({
+    totalPages: project.totalPages,
+    startDate: project.startDate,
+    endDate: project.endDate,
+    completions: project.completions,
+  });
 
-  statEls.remaining.textContent = remaining;
-  statEls.daysLeft.textContent = daysLeft;
-  statEls.pace.textContent = pace.toFixed(2);
+  statEls.daysLeft.textContent = stats.daysLeft;
+  statEls.plannedPace.textContent = stats.plannedPace.toFixed(2);
+  statEls.currentPace.textContent = stats.currentPace.toFixed(2);
+  statEls.paceNeeded.textContent = stats.paceNeeded.toFixed(2);
 }
 
 function launchConfetti(target) {

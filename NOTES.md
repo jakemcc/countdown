@@ -30,9 +30,10 @@ UI layout
 - Setup panel for inputs.
 - Page grid for tick list.
 - Burndown chart.
-- Header stats: completed, remaining, days elapsed, days left, pace needed.
+- Header stats: days left, planned pace, current pace, pace needed.
 - Compact header with eyebrow only; stats box reduced for mobile.
-- Small-screen stats are a single-line strip with inline labels.
+- Small-screen stats stack labels above values.
+- Stats are centered within the header card.
 - Small-screen page grid targets 10 columns with tighter spacing.
 - Page Frontier header text removed; buttons remain.
 - Header stats hide completed; total pages default to 140.

@@ -7,6 +7,7 @@ import {
   computeIdealRemaining,
   computeIdealRemainingForChart,
   computeActualRemaining,
+  computePaceStats,
   getNextPage,
   isPageCompletable,
   completePage,
@@ -100,6 +101,47 @@ test("computeActualRemaining repeats remaining on no-progress days", () => {
   const remaining = computeActualRemaining(5, range, completions);
 
   assert.deepEqual(remaining, [4, 4, 3, 3]);
+});
+
+test("computePaceStats uses inclusive day counts for planned and current pace", () => {
+  const start = new Date(2025, 0, 1);
+  const end = new Date(2025, 0, 5);
+  const completions = [
+    { page: 1, date: "2025-01-01" },
+    { page: 2, date: "2025-01-02" },
+    { page: 3, date: "2025-01-03" },
+  ];
+  const stats = computePaceStats({
+    totalPages: 30,
+    startDate: start,
+    endDate: end,
+    completions,
+    today: new Date(2025, 0, 3),
+  });
+
+  assert.equal(stats.daysLeft, 3);
+  assert.equal(stats.plannedPace, 6);
+  assert.equal(stats.currentPace, 1);
+  assert.equal(stats.paceNeeded, 9);
+});
+
+test("computePaceStats clamps days left after the end date", () => {
+  const start = new Date(2025, 0, 1);
+  const end = new Date(2025, 0, 5);
+  const completions = [
+    { page: 1, date: "2025-01-01" },
+    { page: 2, date: "2025-01-02" },
+  ];
+  const stats = computePaceStats({
+    totalPages: 10,
+    startDate: start,
+    endDate: end,
+    completions,
+    today: new Date(2025, 0, 7),
+  });
+
+  assert.equal(stats.daysLeft, 0);
+  assert.equal(stats.currentPace, 0.4);
 });
 
 test("getNextPage returns the next sequential page", () => {
