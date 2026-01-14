@@ -1,6 +1,7 @@
 Progress log
 
 2026-01-14
+- Request persistent storage after Start tracking or page completion, and show a warning if denied.
 - Added a % Done stat in the header based on completed pages.
 - Added a pace stats test for percent done.
 

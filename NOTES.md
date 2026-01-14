@@ -17,6 +17,7 @@ Rules
 Data storage
 - IndexedDB for all state.
 - Single project, one book at a time.
+- Request persistent storage after user actions; show a warning if denied.
 
 Chart
 - Inline SVG, no third-party libraries.

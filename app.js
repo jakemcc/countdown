@@ -14,6 +14,7 @@ import {
   shouldUseHeartConfetti,
   toDateKey,
 } from "./logic.mjs";
+import { createPersistenceManager } from "./persistence.mjs";
 
 const DB_NAME = "countdown2";
 const STORE_NAME = "project";
@@ -33,6 +34,7 @@ const elements = {
   goalError: document.querySelector("#goal-error"),
   goalInput: document.querySelector("#goal-total-pages"),
   goalCancel: document.querySelector("#goal-cancel"),
+  persistenceStatus: document.querySelector("#persistence-status"),
   chart: document.querySelector("#chart"),
   stats: document.querySelector("#stats"),
 };
@@ -54,6 +56,17 @@ const CONFETTI_PRESETS = [
 const HEART_BURST_CHANCE = getHeartBurstChance();
 
 let projectState = null;
+const persistenceManager = createPersistenceManager({
+  storage: typeof navigator === "undefined" ? undefined : navigator.storage,
+  onDenied() {
+    if (!elements.persistenceStatus) {
+      return;
+    }
+    elements.persistenceStatus.textContent =
+      "Persistent storage is not available. Your browser may clear progress.";
+    elements.persistenceStatus.hidden = false;
+  },
+});
 
 function openDb() {
   return new Promise((resolve, reject) => {
@@ -415,6 +428,7 @@ elements.setupForm.addEventListener("submit", async (event) => {
   };
   await saveProject(projectState);
   render(projectState);
+  await persistenceManager.requestPersistenceOnce();
 });
 
 elements.pageGrid.addEventListener("click", async (event) => {
@@ -435,6 +449,7 @@ elements.pageGrid.addEventListener("click", async (event) => {
       project.completions = [...project.completions, { page: pageNumber, date: today }];
       return project;
     });
+    await persistenceManager.requestPersistenceOnce();
     return;
   }
 
@@ -517,6 +532,7 @@ elements.resetButton.addEventListener("click", async () => {
 });
 
 async function init() {
+  await persistenceManager.checkPersisted();
   projectState = await loadProject();
   render(projectState);
 }
