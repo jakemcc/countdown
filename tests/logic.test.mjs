@@ -129,6 +129,26 @@ test("computePaceStats uses inclusive day counts for planned and current pace", 
   assert.equal(stats.paceNeeded, 9);
 });
 
+test("computePaceStats reports percent done", () => {
+  const start = new Date(2025, 0, 1);
+  const end = new Date(2025, 0, 5);
+  const completions = [
+    { page: 1, date: "2025-01-01" },
+    { page: 2, date: "2025-01-02" },
+    { page: 3, date: "2025-01-03" },
+  ];
+
+  const stats = computePaceStats({
+    totalPages: 10,
+    startDate: start,
+    endDate: end,
+    completions,
+    today: new Date(2025, 0, 3),
+  });
+
+  assert.equal(stats.percentDone, 30);
+});
+
 test("computePaceStats clamps days left after the end date", () => {
   const start = new Date(2025, 0, 1);
   const end = new Date(2025, 0, 5);

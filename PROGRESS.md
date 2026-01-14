@@ -1,5 +1,9 @@
 Progress log
 
+2026-01-14
+- Added a % Done stat in the header based on completed pages.
+- Added a pace stats test for percent done.
+
 2026-01-10
 - Fixed Change goal form visibility when hidden.
 - Added a Projected label in the burndown legend.

@@ -39,6 +39,7 @@ const elements = {
 
 const statEls = {
   daysLeft: document.querySelector('[data-stat="days-left"]'),
+  percentDone: document.querySelector('[data-stat="percent-done"]'),
   plannedPace: document.querySelector('[data-stat="planned-pace"]'),
   currentPace: document.querySelector('[data-stat="current-pace"]'),
   paceNeeded: document.querySelector('[data-stat="pace-needed"]'),
@@ -138,6 +139,7 @@ function setStats(project) {
   });
 
   statEls.daysLeft.textContent = stats.daysLeft;
+  statEls.percentDone.textContent = Math.round(stats.percentDone);
   statEls.plannedPace.textContent = stats.plannedPace.toFixed(2);
   statEls.currentPace.textContent = stats.currentPace.toFixed(2);
   statEls.paceNeeded.textContent = stats.paceNeeded.toFixed(2);

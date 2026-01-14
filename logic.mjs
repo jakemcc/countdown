@@ -159,18 +159,23 @@ export function computePaceStats({
     : Math.floor((end - normalizedToday) / msPerDay) + 1;
   const daysLeft = Math.min(Math.max(daysLeftRaw, 0), totalDays);
 
+  const total = Number(totalPages) || 0;
   const completed = safeCompletions.length;
-  const remaining = Math.max((Number(totalPages) || 0) - completed, 0);
+  const remaining = Math.max(total - completed, 0);
 
-  const plannedPace = (Number(totalPages) || 0) / totalDays;
+  const plannedPace = total / totalDays;
   const currentPace = completed / Math.max(daysDone, 1);
   const paceNeeded = remaining / Math.max(daysLeft, 1);
+  const percentDone = total > 0
+    ? Math.min(Math.max((completed / total) * 100, 0), 100)
+    : 0;
 
   return {
     daysLeft,
     plannedPace,
     currentPace,
     paceNeeded,
+    percentDone,
   };
 }
 

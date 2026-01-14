@@ -33,6 +33,7 @@ UI layout
 - Page grid for tick list.
 - Burndown chart.
 - Header stats: days left, planned pace, current pace, pace needed.
+- Header stats include % Done based on completed pages.
 - Compact header with eyebrow only; stats box reduced for mobile.
 - Small-screen stats stack labels above values.
 - Stats are centered within the header card.
