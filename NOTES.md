@@ -51,6 +51,7 @@ UI layout
 - Heart-shaped confetti pieces are larger (20px) for readability.
 - Final page completion always triggers giant heart confetti.
 - The final page can be uncompleted unless it is locked.
+- Assets are cache-busted via version query params in index.html.
 - GitHub Pages workflow copies site files into a single artifact folder.
 - Locked page tiles render a lock icon instead of the page number.
 
