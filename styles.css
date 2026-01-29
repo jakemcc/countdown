@@ -297,6 +297,11 @@ body {
   );
 }
 
+.confetti-piece--heart-giant {
+  width: 44px;
+  height: 44px;
+}
+
 .confetti-piece:nth-child(odd) {
   width: 5px;
   height: 8px;
@@ -305,6 +310,11 @@ body {
 .confetti-piece--heart:nth-child(odd) {
   width: 19px;
   height: 19px;
+}
+
+.confetti-piece--heart-giant:nth-child(odd) {
+  width: 42px;
+  height: 42px;
 }
 
 .legend {

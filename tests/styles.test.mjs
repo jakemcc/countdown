@@ -38,6 +38,27 @@ test("heart confetti pieces are larger for readability", async () => {
   );
 });
 
+test("giant heart confetti pieces are noticeably larger", async () => {
+  const css = await fs.readFile(new URL("../styles.css", import.meta.url), "utf8");
+
+  assert.ok(
+    /\.confetti-piece--heart-giant\s*{[^}]*width:\s*44px;/.test(css)
+  );
+  assert.ok(
+    /\.confetti-piece--heart-giant\s*{[^}]*height:\s*44px;/.test(css)
+  );
+  assert.ok(
+    /\.confetti-piece--heart-giant:nth-child\(odd\)\s*{[^}]*width:\s*42px;/.test(
+      css
+    )
+  );
+  assert.ok(
+    /\.confetti-piece--heart-giant:nth-child\(odd\)\s*{[^}]*height:\s*42px;/.test(
+      css
+    )
+  );
+});
+
 test("projected legend marker is dashed", async () => {
   const css = await fs.readFile(new URL("../styles.css", import.meta.url), "utf8");
 

@@ -7,7 +7,8 @@ import {
   computeProjectedRemaining,
   getNextPage,
   isPageCompletable,
-  canUndo,
+  isFinalCompletion,
+  isUndoableClick,
   getHeartBurstChance,
   lockIn,
   reconcileGoal,
@@ -53,6 +54,13 @@ const CONFETTI_PRESETS = [
   { pieces: 24, spreadX: 140, riseY: 110, spin: 210, delay: 120 },
   { pieces: 48, spreadX: 220, riseY: 180, spin: 360, delay: 160 },
 ];
+const FINAL_CONFETTI_PRESET = {
+  pieces: 120,
+  spreadX: 420,
+  riseY: 280,
+  spin: 540,
+  delay: 220,
+};
 const HEART_BURST_CHANCE = getHeartBurstChance();
 
 let projectState = null;
@@ -158,19 +166,25 @@ function setStats(project) {
   statEls.paceNeeded.textContent = stats.paceNeeded.toFixed(2);
 }
 
-function launchConfetti(target) {
+function launchConfetti(target, options = {}) {
   const rect = target.getBoundingClientRect();
   const burst = document.createElement("div");
   burst.className = "confetti-burst";
   burst.style.left = `${rect.left + rect.width / 2}px`;
   burst.style.top = `${rect.top + rect.height / 2}px`;
 
-  const preset = CONFETTI_PRESETS[Math.floor(Math.random() * CONFETTI_PRESETS.length)];
-  const isHeartBurst = shouldUseHeartConfetti(Math.random(), HEART_BURST_CHANCE);
+  const { forceHearts = false, presetOverride = null, giantHearts = false } = options;
+  const preset =
+    presetOverride || CONFETTI_PRESETS[Math.floor(Math.random() * CONFETTI_PRESETS.length)];
+  const isHeartBurst = forceHearts
+    ? true
+    : shouldUseHeartConfetti(Math.random(), HEART_BURST_CHANCE);
   const pieces = preset.pieces;
   for (let i = 0; i < pieces; i += 1) {
     const piece = document.createElement("span");
-    piece.className = `confetti-piece${isHeartBurst ? " confetti-piece--heart" : ""}`;
+    piece.className = `confetti-piece${isHeartBurst ? " confetti-piece--heart" : ""}${
+      isHeartBurst && giantHearts ? " confetti-piece--heart-giant" : ""
+    }`;
     const x = Math.round((Math.random() - 0.5) * preset.spreadX);
     const y = Math.round(-40 - Math.random() * preset.riseY);
     const r = Math.round((Math.random() * preset.spin * 2) - preset.spin);
@@ -439,11 +453,15 @@ elements.pageGrid.addEventListener("click", async (event) => {
 
   const pageNumber = Number(button.dataset.page);
   const completedPages = getCompletedPages(projectState);
-  const nextPage = getNextPage(projectState.totalPages, completedPages);
-  const canUndoLast = canUndo(completedPages, projectState.lockedFrontier);
 
   if (isPageCompletable(pageNumber, projectState.totalPages, completedPages)) {
-    launchConfetti(button);
+    const isFinal = isFinalCompletion(pageNumber, projectState.totalPages, completedPages);
+    launchConfetti(
+      button,
+      isFinal
+        ? { forceHearts: true, presetOverride: FINAL_CONFETTI_PRESET, giantHearts: true }
+        : undefined
+    );
     const today = toDateKey(new Date());
     await updateProject((project) => {
       project.completions = [...project.completions, { page: pageNumber, date: today }];
@@ -453,13 +471,7 @@ elements.pageGrid.addEventListener("click", async (event) => {
     return;
   }
 
-  const lastCompleted = completedPages[completedPages.length - 1];
-  if (
-    canUndoLast &&
-    pageNumber === lastCompleted &&
-    nextPage !== null &&
-    pageNumber === nextPage - 1
-  ) {
+  if (isUndoableClick(pageNumber, completedPages, projectState.lockedFrontier)) {
     await updateProject((project) => {
       project.completions = project.completions.slice(0, -1);
       return project;

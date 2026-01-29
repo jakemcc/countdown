@@ -17,6 +17,8 @@ import {
   toDateKey,
   shouldUseHeartConfetti,
   getHeartBurstChance,
+  isFinalCompletion,
+  isUndoableClick,
   reconcileGoal,
   computeProjectedRemaining,
 } from "../logic.mjs";
@@ -214,6 +216,22 @@ test("shouldUseHeartConfetti returns false at or above the chance threshold", ()
 
 test("getHeartBurstChance returns the default heart confetti chance", () => {
   assert.equal(getHeartBurstChance(), 0.35);
+});
+
+test("isFinalCompletion returns true only when completing the last page", () => {
+  const completedPages = [1, 2];
+
+  assert.equal(isFinalCompletion(3, 3, completedPages), true);
+  assert.equal(isFinalCompletion(2, 3, completedPages), false);
+  assert.equal(isFinalCompletion(4, 3, completedPages), false);
+});
+
+test("isUndoableClick allows undoing the last page even when finished", () => {
+  const completedPages = [1, 2, 3];
+
+  assert.equal(isUndoableClick(3, completedPages, 0), true);
+  assert.equal(isUndoableClick(2, completedPages, 0), false);
+  assert.equal(isUndoableClick(3, completedPages, 3), false);
 });
 
 test("reconcileGoal keeps completions when expanding the total", () => {

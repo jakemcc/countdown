@@ -1,5 +1,10 @@
 Progress log
 
+2026-01-28
+- Added a final-page confetti burst with giant heart pieces.
+- Allowed undoing the final page unless it is locked.
+- Added tests for final completion detection and giant heart sizing.
+
 2026-01-14
 - Request persistent storage after Start tracking or page completion, and show a warning if denied.
 - Added a % Done stat in the header based on completed pages.

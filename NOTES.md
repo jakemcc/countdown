@@ -49,6 +49,8 @@ UI layout
 - Confetti now randomizes subtle/medium/wild presets.
 - Confetti bursts use heart-shaped pieces 35% of the time.
 - Heart-shaped confetti pieces are larger (20px) for readability.
+- Final page completion always triggers giant heart confetti.
+- The final page can be uncompleted unless it is locked.
 - GitHub Pages workflow copies site files into a single artifact folder.
 - Locked page tiles render a lock icon instead of the page number.
 

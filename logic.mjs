@@ -195,6 +195,16 @@ export function isPageCompletable(pageNumber, totalPages, completedPages) {
   return next !== null && pageNumber === next;
 }
 
+export function isFinalCompletion(pageNumber, totalPages, completedPages) {
+  if (typeof totalPages !== "number") {
+    return false;
+  }
+  return (
+    isPageCompletable(pageNumber, totalPages, completedPages) &&
+    pageNumber === totalPages
+  );
+}
+
 export function completePage(completedPages, pageNumber, totalPages) {
   if (!isPageCompletable(pageNumber, totalPages, completedPages)) {
     return completedPages;
@@ -208,6 +218,14 @@ export function canUndo(completedPages, lockedFrontier) {
   }
   const last = completedPages[completedPages.length - 1];
   return last > lockedFrontier;
+}
+
+export function isUndoableClick(pageNumber, completedPages, lockedFrontier) {
+  if (!canUndo(completedPages, lockedFrontier)) {
+    return false;
+  }
+  const last = completedPages[completedPages.length - 1];
+  return pageNumber === last;
 }
 
 export function undoLast(completedPages, lockedFrontier) {
